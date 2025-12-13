@@ -62,6 +62,23 @@ app.get('/health', (req, res) => {
     res.json({ status: 'OK', message: 'Sports Training Tracker API is running.' });
 });
 
+// Root endpoint
+app.get('/', (req, res) => {
+    res.json({
+        message: 'Welcome to Task Management API',
+        version: '1.0.0',
+        endpoints: {
+            health: '/health',
+            register: 'POST /api/register',
+            login: 'POST /api/login',
+            tasks: 'GET /api/tasks (requires auth)',
+            createTask: 'POST /api/tasks (requires auth)',
+            updateTask: 'PUT /api/tasks/:id (requires auth)',
+            deleteTask: 'DELETE /api/tasks/:id (requires auth)'
+        }
+    });
+});
+
 // ROUTES
 
 

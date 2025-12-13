@@ -95,7 +95,7 @@ app.post('/api/users/register', async (req, res) => {
                 id: newUser.id,
                 username: newUser.username,
                 role: newUser.role,
-                password: newUser.password // <-- this is the hashed password
+                // password: newUser.password // <-- this is the hashed password
             }
         });
     } catch (error) {
@@ -151,7 +151,14 @@ app.get('/api/users/:id', requireAuth, requireRole('coach'), async (req, res) =>
 app.put('/api/users/:id', requireAuth, async (req, res) => {
     try {
         const user = await User.findByPk(req.params.id);
-        if (!user) return res.status(404).json({ error: 'User not found.' });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+
+        // Authorization check
+        if (req.user.role !== 'coach' && req.user.id !== user.id) {
+            return res.status(403).json({ error: 'Not allowed to update this user.' });
+        }
 
         const { username, password, role, height, position } = req.body;
 
@@ -159,12 +166,23 @@ app.put('/api/users/:id', requireAuth, async (req, res) => {
             req.body.password = await bcrypt.hash(password, 10);
         }
 
-        await user.update({ username, password: req.body.password, role, height, position });
+        await user.update({
+            username,
+            password: req.body.password,
+            role,
+            height,
+            position
+        });
+
         res.json({ message: 'User updated successfully', user });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to update user.', details: error.message });
+        res.status(500).json({
+            error: 'Failed to update user.',
+            details: error.message
+        });
     }
 });
+
 
 // Delete user
 app.delete('/api/users/:id', requireAuth, requireRole('coach'), async (req, res) => {

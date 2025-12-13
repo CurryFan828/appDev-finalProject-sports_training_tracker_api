@@ -65,19 +65,30 @@ app.get('/health', (req, res) => {
 // Root endpoint
 app.get('/', (req, res) => {
     res.json({
-        message: 'Welcome to Task Management API',
+        message: 'Welcome to the Sports Training Tracker API',
         version: '1.0.0',
         endpoints: {
             health: '/health',
-            register: 'POST /api/register',
-            login: 'POST /api/login',
-            tasks: 'GET /api/tasks (requires auth)',
-            createTask: 'POST /api/tasks (requires auth)',
-            updateTask: 'PUT /api/tasks/:id (requires auth)',
-            deleteTask: 'DELETE /api/tasks/:id (requires auth)'
+            register: 'POST /api/users/register',
+            login: 'POST /api/users/login',
+            getUsers: 'GET /api/users (requires auth, coach only)',
+            getUser: 'GET /api/users/:id (requires auth, coach only)',
+            updateUser: 'PUT /api/users/:id (requires auth)',
+            deleteUser: 'DELETE /api/users/:id (requires auth, coach only)',
+            getWorkouts: 'GET /api/workouts (requires auth)',
+            getWorkout: 'GET /api/workouts/:id (requires auth)',
+            createWorkout: 'POST /api/workouts (requires auth)',
+            updateWorkout: 'PUT /api/workouts/:id (requires auth)',
+            deleteWorkout: 'DELETE /api/workouts/:id (requires auth)',
+            getGoals: 'GET /api/goals (requires auth)',
+            getGoal: 'GET /api/goals/:id (requires auth)',
+            createGoal: 'POST /api/goals (requires auth)',
+            updateGoal: 'PUT /api/goals/:id (requires auth)',
+            deleteGoal: 'DELETE /api/goals/:id (requires auth)'
         }
     });
 });
+
 
 // ROUTES
 
